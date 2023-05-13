@@ -1,0 +1,25 @@
+﻿@model TechShopWebsite.Models.EF.News
+
+
+@{
+    ViewBag.Title = "Chi tiết tin tức";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="text-center">Detail News</h1>
+        @Html.Raw(Model.content)
+
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $('#News').addClass('active-menu');
+    </script>
+}
+
+

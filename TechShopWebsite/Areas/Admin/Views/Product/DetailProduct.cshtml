@@ -1,0 +1,95 @@
+﻿@model TechShopWebsite.Models.EF.Product
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="d-flex justify-content-center">
+    <a href="@Url.RouteUrl("AdminProducts")" class="btn btn-success"> <i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
+    <h3>Chi tiết sản phẩm</h3>
+
+    <div class="d-flex flex-column-reverse">
+        <div class="p-2">
+            <h4> <b>Name: </b>  <span>@Model.productName</span> </h4>
+
+        </div>
+        <div class="p-2">
+            <h4> <b>Type: </b>  <span>@Model.type</span></h4>
+
+        </div>
+        <div class="p-2">
+            <h4> <b>Price: </b><span>@Model.price</span></h4>
+
+        </div>
+        <div class="p-2">
+            <h4> <b>Sale: </b>  <span>@Model.sale</span></h4>
+
+        </div>
+        <div class="p-2">
+            <h4> <b>Image: </b>  </h4>
+            @foreach (var img in Model.img.Split(';'))
+            {
+                <img class="p-4" src="@img" height="100" />
+
+            }
+        </div>
+        <div class="p-2">
+            <h4> <b>Screen: </b>   <span>@Model.screen</span></h4>
+
+        </div>
+
+        <div class="p-2">
+            <h4> <b>Camera: </b>  <span>@Model.Camera</span></h4>
+
+        </div>
+        <div class="p-2">
+            <h4> <b>Hệ Điều Hành: </b> <span>@Model.OS</span></h4>
+
+        </div>
+        <div class="p-2">
+            <h4> <b>CPU: </b>  <span>@Model.CPU</span></h4>
+
+        </div>
+        <div class="p-2">
+            <h4> <b>RAM: </b>  <span>@Model.RAM</span></h4>
+
+        </div>
+        <div class="p-2">
+            <h4> <b>HardDrive: </b> <span>@Model.HardDrive</span></h4>
+
+
+        </div>
+        <div class="p-2">
+            <h4><b>Capacity: </b>  <span>@Model.Capacity</span></h4>
+
+
+        </div>
+        <div class="p-2">
+            <h4> <b>Manufacturer: </b>  <span>@Model.manufacturer</span></h4>
+
+        </div>
+        <div class="p-2">
+            <h4><b>Order: </b>  <span>@Model.order</span></h4>
+
+        </div>
+        <div class="p-2">
+            <h4> <b>Hide: </b>  <span>@Model.hide</span></h4>
+
+        </div>
+        <div class="p-2">
+            <h4> <b>Description: </b> </h4>
+            <span>@Html.Raw(Model.description)</span>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+@section scripts{
+    <script>
+        $('#product').addClass('active-menu');
+    </script>
+}
+

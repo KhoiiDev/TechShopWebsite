@@ -1,0 +1,71 @@
+﻿<nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="@Url.RouteUrl("AdminProducts")">TechShop</a>
+    </div>
+    <div style="color: white;padding: 15px 50px 5px 50px;float: right;font-size: 16px;">
+        @using Microsoft.AspNet.Identity
+        @if (Request.IsAuthenticated)
+        {
+            using (Html.BeginForm("LogOff", "AccountAdmin", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="p-3 d-inline-flex">
+                    <span> @User.Identity.GetUserName()</span>
+                    <a href="javascript:document.getElementById('logoutForm').submit()" class="btn btn-danger square-btn-adjust">Logout</a>
+
+                    @* <a class="nav-link btn btn-dark text-white rounded-pill d-flex justify-content-center align-items-center py-2 mr-2" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>*@
+                </div>
+            }
+        }
+
+    </div>
+</nav>
+<!-- /. NAV TOP  -->
+<nav class="navbar-default navbar-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="main-menu">
+            <li class="text-center">
+                <img src="/ckfinder/userfiles/files/public/find_user.png" class="user-image img-responsive" />
+            </li>
+            <li>
+                <a id="product" href="@Url.RouteUrl("AdminProducts")"><i class="fa fa-laptop fa-3x"></i>Quản lý sản phẩm</a>
+            </li>
+            <li>
+                <a id="Category" href="@Url.RouteUrl("AdminCategorys")"><i class="fa fa-bars fa-3x"></i> Danh mục</a>
+            </li>
+            <li>
+                <a id="News" href="@Url.RouteUrl("AdminNews")"><i class="fa fa-envelope-o fa-3x"></i>Tin Tức</a>
+            </li>
+
+            <li>
+                <a id="checkouts" href="@Url.RouteUrl("AdminCheckouts")"><i class="fa fa-magnet fa-3x"></i>Quản lý bán hàng   </a>
+            </li>
+            <li>
+                <a id="contact" href="@Url.RouteUrl("AdminContact")"><i class="fa fa-phone fa-3x"></i>Quản lý liên hệ</a>
+            </li>
+            <li>
+                <a ref="#" id="accounts">
+                    <i class="fa fa-user fa-3x"></i> Quản lý tài khoản
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="@Url.RouteUrl("AdminRole")">Quản lý quyền</a>
+                    </li>
+                    <li>
+                        <a href="@Url.RouteUrl("AdminAccounts")">Quản lý thông tin tài khoản</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+</nav>
+
+

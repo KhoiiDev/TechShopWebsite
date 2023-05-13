@@ -1,0 +1,129 @@
+﻿@model TechShopWebsite.Models.EF.Product
+@{
+    ViewBag.Title = "Cập nhật sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="d-flex justify-content-center">
+    @using (Html.BeginForm("EditProduct", "Product", FormMethod.Post, new { }))
+    {
+        <a href="@Url.RouteUrl("AdminProducts")" class="btn btn-success"> <i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
+        <h3>Edit Product</h3>
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(x => x.Id)
+
+        <form role="form">
+            <div class="form-group">
+                <label>Name</label>
+                @Html.TextBoxFor(x => x.productName, new { @class = "form-control", @placeholder = "PLease enter name" })
+                @Html.ValidationMessageFor(x => x.productName, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label>Type</label>
+                @Html.DropDownListFor(x => x.type, new SelectList(new List<string> { "Phone", "Laptop", "Tablet", "PC", "Smartwatch" }), "Select Type", new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.type, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label>Price</label>
+                @Html.TextBoxFor(x => x.price, new { @class = "form-control", @placeholder = "PLease enter price" })
+                @Html.ValidationMessageFor(x => x.price, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label>Sale</label>
+                @Html.TextBoxFor(x => x.sale, new { @class = "form-control", @placeholder = "PLease enter sale" })
+                @Html.ValidationMessageFor(x => x.sale, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label>Upload Image</label>
+                @Html.TextAreaFor(x => x.img, new { @class = "form-control", @id = "uploadAvatar", @rows = 6 })
+                <br />
+                <button type="button" onclick="upload();">Upload hình ảnh</button>
+            </div>
+            <div class="form-group">
+                <label>Screen</label>
+                @Html.TextBoxFor(x => x.screen, new { @class = "form-control", @placeholder = "PLease enter screen" })
+                @Html.ValidationMessageFor(x => x.screen, null, new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Camera</label>
+                @Html.TextBoxFor(x => x.Camera, new { @class = "form-control", @placeholder = "PLease enter Camera" })
+                @Html.ValidationMessageFor(x => x.Camera, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label>Hệ Điều Hành</label>
+                @Html.TextBoxFor(x => x.OS, new { @class = "form-control", @placeholder = "PLease enter CPU" })
+                @Html.ValidationMessageFor(x => x.OS, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label>CPU</label>
+                @Html.TextBoxFor(x => x.CPU, new { @class = "form-control", @placeholder = "PLease enter CPU" })
+                @Html.ValidationMessageFor(x => x.CPU, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label>RAM</label>
+                @Html.TextBoxFor(x => x.RAM, new { @class = "form-control", @placeholder = "PLease enter RAM" })
+                @Html.ValidationMessageFor(x => x.RAM, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label>HardDrive</label>
+                @Html.TextBoxFor(x => x.HardDrive, new { @class = "form-control", @placeholder = "PLease enter HardDrive" })
+                @Html.ValidationMessageFor(x => x.HardDrive, null, new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Capacity</label>
+                @Html.TextBoxFor(x => x.Capacity, new { @class = "form-control", @placeholder = "PLease enter Capacity" })
+                @Html.ValidationMessageFor(x => x.Capacity, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label>Manufacturer</label>
+                @Html.TextBoxFor(x => x.manufacturer, new { @class = "form-control", @placeholder = "PLease enter manufacturer" })
+                @Html.ValidationMessageFor(x => x.manufacturer, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label>Descriptions</label>
+                @Html.TextAreaFor(x => x.description, new { @class = "form-control", @rows = 3, @id = "txtDescription" })
+                @Html.ValidationMessageFor(x => x.description, null, new { @class = "text-danger" })
+            </div>
+
+
+            <div class="form-group">
+                <label>Order</label>
+                @Html.TextBoxFor(x => x.order, new { @class = "form-control", @placeholder = "PLease enter Order" })
+                @Html.ValidationMessageFor(x => x.order, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group checkbox">
+                <label>Hide</label>
+                @Html.CheckBoxFor(x => x.hide, new { @checked = false })
+            </div>
+            <button type="submit" class="btn btn-primary">UPLOAD</button>
+        </form>
+    }
+</div>
+
+
+@section scripts{
+    <script>
+        $('#product').addClass('active-menu');
+
+
+        $(document).ready(function () {
+            CKEDITOR.replace('txtDescription', {
+                sustomConfig: '/content/ckeditor/config.js',
+                extraAllowedContent: 'span',
+            });
+        });
+        function upload() {
+            var finder = new CKFinder();
+
+            finder.selectActionFunction = function (fileUrl) {
+                var nameValue = $('#uploadAvatar').val();
+                $('#uploadAvatar').val(nameValue + ";" + fileUrl);
+            }
+            finder.popup();
+        }
+    </script>
+}
+

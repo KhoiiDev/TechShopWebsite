@@ -1,0 +1,157 @@
+﻿@model List<TechShopWebsite.Models.EF.Checkout>
+@using Microsoft.AspNet.Identity
+
+
+@{
+    ViewBag.Title = "Checkout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="@Url.RouteUrl("Home")">Home</a>
+                <span class="breadcrumb-item active">Checkout</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Checkout Start -->
+<div class="container-fluid">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <div class="row px-xl-5">
+                <div class="col-lg-12">
+                    <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">INVOICE</span></h5>
+                    <div class="bg-light p-30 mb-5">
+                        @if (item.carts != null && item.carts.Any())
+                        {
+                            decimal total = 0;
+
+                            <div>
+                                <table class="table table-borderless text-center">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Tên sản phẩm</th>
+                                            <th>Số lượng</th>
+                                            <th>Giá tiền</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var cart in item.carts)
+                                        {
+
+                                            total = total + cart.cost * cart.quantity;
+
+                                            <tr>
+                                                <td>
+                                                    <img class="img-fluid" src="@cart.product.img.Split(';')[0]" width="80">
+                                                </td>
+                                                <td>
+                                                    @cart.product.productName
+                                                </td>
+                                                <td>x @cart.quantity</td>
+                                                <td>@((cart.cost * cart.quantity).ToString("N3").Replace(",", ".") + " VND")</td>
+                                            </tr>
+
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <hr class="border border-4" style="height: 15px; background: green" />
+
+                            <div class="row">
+                                <div class="col-md-6  pt-2">
+                                    <style>
+                                        table {
+                                            font-family: arial, sans-serif;
+                                            width: 100%;
+                                        }
+
+                                        td, th {
+                                            border: hidden;
+                                            text-align: left;
+                                            padding: 8px;
+                                        }
+                                    </style>
+
+                                    <table style="border: none">
+                                        <tbody>
+                                            <tr>
+                                                <td class="h6 font-weight-bold">Người Mua</td>
+                                                <td class="pe-2">@item.receiver</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="h6 font-weight-bold">Ngày lập:</td>
+                                                <td class="pe-2">@item.datebegin</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="h6 font-weight-bold">Địa chỉ</td>
+                                                <td class="pe-2">@item.Address</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="h6 font-weight-bold">Số điện thoại</td>
+                                                <td class="pe-2">@item.phone</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="h6 font-weight-bold">Mã giảm giá</td>
+                                                <td class="pe-2">@item.ZipCode</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class=" col-md-5 pt-2">
+                                    <div class="pt-4">
+                                        <div class="d-flex justify-content-between mt-2">
+                                            <h4 class="font-weight-medium pe-3">Shipping: </h4>
+                                            <h4 class="font-weight-medium">@((total * (decimal)0.05).ToString("N3").Replace(",", ".") + " VND")</h4>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-2">
+                                            <h1 class="font-weight-medium pe-3">Tổng cộng:</h1>
+                                            <h1>@((total+ (total * (decimal)0.05) ).ToString("N3").Replace(",", ".") + " VND")</h1>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-end">
+                                        @if (item.isPay)
+                                        {
+                                            <div>
+                                                <img src="/ckfinder/userfiles/files/public/paid%20tick.jpg" width="100" />
+                                                <p class="text-success">Đã thanh toán</p>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div>
+                                                <img src="/ckfinder/userfiles/images/public/nope.png" width="100" />
+                                                <p class="text-danger">Chưa thanh toán</p>
+                                            </div>
+                                        }
+                                    </div>
+
+                                </div>
+                            </div>                                
+                         }   
+                    </div>
+                </div>
+            </div>
+        }
+
+    }
+
+</div>
+<!-- Checkout End -->
+@section scripts{
+    <script>
+        $('#ActionLinkCheckout').addClass('active');
+    </script>
+}

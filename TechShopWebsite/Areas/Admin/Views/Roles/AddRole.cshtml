@@ -1,0 +1,37 @@
+﻿@using Microsoft.AspNet.Identity.EntityFramework
+@model IdentityRole
+@{
+    ViewBag.Title = "Thêm quyền";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="d-flex justify-content-center">
+    @using (Html.BeginForm("AddRole", "Roles", FormMethod.Post))
+    {
+        <a href="@Url.RouteUrl("AdminRole")" class="btn btn-success"> <i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
+        <h3>Add Category</h3>
+        @Html.ValidationSummary(false)
+        @Html.AntiForgeryToken()
+        <form role="form">
+            <div class="form-group">
+                <label>Name</label>
+                @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @placeholder = "PLease enter category name" })
+                @Html.ValidationMessageFor(x => x.Name, null, new { @class = "text-danger" })
+            </div>
+            <button type="submit" class="btn btn-primary">ADD</button>
+        </form>
+    }
+</div>
+
+@section scripts{
+    <script>
+        $('#accounts').addClass('active-menu');
+        function upload() {
+            var finder = new CKFinder();
+            finder.selectActionFunction = function (fileUrl) {
+                $('#uploadCategory').val(fileUrl);
+            }
+            finder.popup();
+        }
+    </script>
+}

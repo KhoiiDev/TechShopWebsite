@@ -1,0 +1,70 @@
+﻿@model TechShopWebsite.Models.EF.News
+@{
+    ViewBag.Title = "Thêm tin tức";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="d-flex justify-content-center">
+    @using (Html.BeginForm("AddNews", "NewsAdmin", FormMethod.Post, new { }))
+    {
+        <a href="@Url.RouteUrl("AdminNews")" class="btn btn-success"> <i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
+        <h3>Add News</h3>
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <form role="form">
+            <div class="form-group">
+                <label>Title</label>
+                @Html.TextBoxFor(x => x.title, new { @class = "form-control", @placeholder = "PLease enter title" })
+                @Html.ValidationMessageFor(x => x.title, null, new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Descriptions</label>
+                @Html.TextAreaFor(x => x.description, new { @class = "form-control", @rows = 3, @id = "txtDescription" })
+                @Html.ValidationMessageFor(x => x.description, null, new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Content</label>
+                @Html.TextAreaFor(x => x.content, new { @class = "form-control", @rows = 3, @id = "txtContent" })
+                @Html.ValidationMessageFor(x => x.content, null, new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Upload Image</label>
+                @Html.TextBoxFor(x => x.avatar, new { @class = "form-control", @id = "uploadAvatar" })
+                <br />
+                <button type="button" onclick="upload();">Upload hình ảnh</button>
+            </div>
+
+            <div class="form-group checkbox">
+                <label>Hide</label>
+                @Html.CheckBoxFor(x => x.hide, new { @checked = false })
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+    }
+</div>
+
+
+@section scripts{
+    <script>
+          $('#News').addClass('active-menu');
+
+
+          $(document).ready(function () {
+              CKEDITOR.replace('txtContent', {
+                  sustomConfig: '/content/ckeditor/config.js',
+                  extraAllowedContent: 'span',
+              });
+          });
+          function upload() {
+              var finder = new CKFinder();
+              finder.selectActionFunction = function (fileUrl) {
+                  $('#uploadAvatar').val(fileUrl);
+              }
+              finder.popup();
+          }
+    </script>
+}

@@ -1,0 +1,57 @@
+﻿@using Microsoft.AspNet.Identity
+
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<!-- Carousel Start -->
+<div class="container-fluid mb-3">
+    <div class="row px-xl-5">
+        @Html.Action("getCarousel", "Home")
+        @Html.Action("getSpecialOfferView", "Home")
+    </div>
+</div>
+<!-- Carousel End -->
+<!-- Featured Start -->
+@Html.Action("getFeaturedProduct", "Home")
+<!-- Featured End -->
+<!-- Categories Start -->
+@Html.Action("getCategory", "Home")
+<!-- Categories End -->
+<!-- Offer Start -->
+@Html.Action("getOffer", "Home")
+<!-- Offer End -->
+<!-- Products Start -->
+@Html.Action("getRecentProduct", "Home")
+<!-- Products End -->
+<!-- News Start -->
+@Html.Action("getNews", "Home")
+<!-- News End -->
+
+@section scripts{
+    <script>
+        $('#ActionLinkHome').addClass('active');
+
+       function addItemToCart(productId) {
+            var userName = '@User.Identity.GetUserName()' // Lấy từ server
+            $.ajax({
+                url: '/Cart/addCart',
+                type: 'Post',
+                data: {
+                    productID: productId,
+                    userN: userName,
+                    quantity: 1,
+                },
+                success: function (response) {
+                    var cartUrl = '@Url.RouteUrl("Cart")';
+                    window.location.href = cartUrl; // chuyển hướng đến trang Cart
+                },
+                error: function () {
+                    alert("Error");
+                }
+            });
+        }
+
+    </script>
+}

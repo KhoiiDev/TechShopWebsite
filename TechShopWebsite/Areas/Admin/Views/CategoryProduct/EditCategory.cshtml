@@ -1,0 +1,49 @@
+﻿@model TechShopWebsite.Models.EF.Category
+@using System.Text;
+
+@{
+    ViewBag.Title = "Chỉnh sửa danh mục sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="d-flex justify-content-center">
+    @using (Html.BeginForm("EditCategory", "CategoryProduct", FormMethod.Post, new { }))
+    {
+        <a href="@Url.RouteUrl("AdminCategorys")" class="btn btn-success"> <i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
+        <h3>Update Category</h3>
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(x => x.Id)
+
+        <form role="form">
+            <div class="form-group">
+                <label>Name</label>
+                @Html.TextBoxFor(x => x.CategoryName, new { @class = "form-control", @placeholder = "PLease enter category name" })
+                @Html.ValidationMessageFor(x => x.CategoryName, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label>Upload Image</label>
+                @Html.TextBoxFor(x => x.CategoryImage, new { @class = "form-control", @id = "uploadCategory" })
+                <br />
+                <button type="button" onclick="upload();">Upload hình ảnh</button>
+            </div>
+            <div class="checkbox form-group">
+                <label>Hide</label>
+                @Html.CheckBoxFor(x => x.hide, new { @checked = true })
+            </div>
+            <div class="form-group">
+                <label>Order</label>
+                @Html.TextAreaFor(x => x.order, new { @class = "form-control", @rows = 3, })
+            </div>
+
+            <button type="submit" class="btn btn-primary">UPLOAD</button>
+        </form>
+    }
+
+
+</div>
+@section scripts{
+    <script>
+        $('#Category').addClass('active-menu');
+    </script>
+}

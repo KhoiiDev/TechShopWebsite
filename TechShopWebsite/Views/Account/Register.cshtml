@@ -1,0 +1,56 @@
+﻿@model TechShopWebsite.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+<main aria-labelledby="title">
+    <p class="text-center p-30">
+        <span class="h1 text-uppercase text-primary bg-dark px-2">TECHCOM</span>
+        <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">SHOP</span>
+    </p>
+    <div class="row justify-content-center">
+        <div class="col-3">
+            <section id="loginForm" class="card border-dark">
+
+                @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <h4 class="card-header bg-dark text-light">@ViewBag.Title</h4>
+                    <div class="card-body">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group mb-3">
+                            @Html.LabelFor(m => m.Email, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email address" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group mb-3">
+                            @Html.LabelFor(m => m.Password, new { @class = "form-label" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group mb-3">
+                            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "form-label" })
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Password" })
+                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="d-grid">
+                            <input type="submit" value="Register" class="btn btn-warning btn-lg" />
+                        </div>
+                        <hr />
+
+                        <div class="text-center float-left pb-3">
+                            @Html.ActionLink("Back to Login", "Login", null, new { @class = "btn btn-outline-info" })
+
+                        </div>
+                    </div>
+                }
+            </section>
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

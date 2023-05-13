@@ -1,0 +1,48 @@
+﻿@model TechShopWebsite.Models.EF.Reviews
+
+@using (Html.BeginForm("addReview", "Detail", FormMethod.Post, new { }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <input type="hidden" name="productId" value="@ViewBag.productId" />
+
+    <h4 class="mb-4">Leave a review</h4>
+    <small>Your email address will not be published. Required fields are marked *</small>
+    <div class="d-flex my-3">
+        <p class="mb-0 mr-2">Your Rating * :</p>
+        <div class="text-primary">
+            <i id="star2" class="far fa-star" onclick="rateProduct(2)"></i>
+            <i id="star3" class="far fa-star" onclick="rateProduct(3)"></i>
+            <i id="star4" class="far fa-star" onclick="rateProduct(4)"></i>
+            <i id="star5" class="far fa-star" onclick="rateProduct(5)"></i>
+            <i id="star6" class="far fa-star" onclick="rateProduct(6)"></i>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="message">Your Review *</label>
+        @Html.TextAreaFor(x => x.ReviewContent, new { @id = "message", @cols = "30", @rows = "5", @class = "form-control", @placeholder = "Please enter your review" })
+        @Html.ValidationMessageFor(x => x.ReviewContent, null, new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label for="name">Your Name *</label>
+        @Html.TextBoxFor(x => x.Reviewer, new { @id = "name", @class = "form-control", @placeholder = "Please enter your name" })
+        @Html.ValidationMessageFor(x => x.Reviewer, null, new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label for="email">Your Email *</label>
+        @Html.TextBoxFor(x => x.Email, new { @type = "email", @id = "email", @class = "form-control", @placeholder = "Please enter your email" })
+        @Html.ValidationMessageFor(x => x.Email, null, new { @class = "text-danger" })
+    </div>
+    if (ViewBag.ErrorMsg != "")
+    {
+        <p class="text-danger">@ViewBag.ErrorMsg </p>
+    }
+    @Html.HiddenFor(x => x.Rating, new { @id = "Rating" })
+
+
+    <div class="form-group mb-0">
+        <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
+    </div>
+}
+

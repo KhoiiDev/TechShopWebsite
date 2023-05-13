@@ -1,0 +1,14 @@
+﻿@using Microsoft.AspNet.Identity.EntityFramework
+@model List<IdentityRole>
+
+@if (Model != null && Model.Any())
+{
+    <select class="slRole" data-id="@ViewBag.userID">
+        <option value="">Chọn quyền muốn thay đổi</option>
+
+        @foreach (var item in Model)
+        {
+            <option value="@item.Name">@item.Name</option>
+        }
+    </select>
+}

@@ -1,0 +1,85 @@
+﻿@model TechShopWebsite.Models.EF.Checkout
+
+@{
+    ViewBag.Title = "Checkout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="#">Home</a>
+                <a class="breadcrumb-item text-dark" href="#">Shop</a>
+                <span class="breadcrumb-item active">Checkout</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Checkout Start -->
+<div class="container-fluid">
+    @using (Html.BeginForm("AddCheckout", "Checkout", FormMethod.Post, new { }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <div class="row px-xl-5">
+
+            <div class="col-lg-8">
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Billing Address</span></h5>
+                <div class="bg-light p-30 mb-5">
+
+                    <div class="row">
+                        <form role="form">
+                            <div class="col-md-6 form-group">
+                                <label>Người nhận</label>
+                                @Html.TextBoxFor(m => m.receiver, new { @class = "form-control", @placeholder = "PLease enter your name" })
+                            </div>
+
+                            <div class="col-md-6 form-group">
+                                <label>Mobile No</label>
+                                @Html.TextBoxFor(m => m.phone, new { @class = "form-control", @placeholder = "PLease enter your phone" })
+
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Address</label>
+                                @Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeholder = "PLease enter your address" })
+
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Province</label>
+                                @Html.TextBoxFor(m => m.province, new { @class = "form-control", @placeholder = "PLease enter your province" })
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>District</label>
+                                @Html.TextBoxFor(m => m.district, new { @class = "form-control", @placeholder = "PLease enter your district" })
+                            </div>
+
+                            <div class="col-md-6 form-group">
+                                <label>ZIP Code</label>
+                                @Html.TextBoxFor(m => m.ZipCode, new { @class = "form-control", @placeholder = "PLease enter your Zip Code" })
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <button type="submit" class="btn btn-block btn-primary font-weight-bold my-3 py-3">
+                                    Proceed To Checkout
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-4">
+                @Html.Action("showCarts", "Checkout", new { carts = ViewBag.ListData })
+            </div>
+        </div>
+    }
+</div>
+<!-- Checkout End -->
+@section scripts{
+    <script>
+        $('#ActionLinkCheckout').addClass('active');
+    </script>
+}

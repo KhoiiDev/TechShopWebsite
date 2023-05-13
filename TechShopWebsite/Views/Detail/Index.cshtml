@@ -1,0 +1,297 @@
+﻿@model TechShopWebsite.Models.EF.Product
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "SHOP";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="/Home">Home</a>
+                <a class="breadcrumb-item text-dark" href="/Category">Shop</a>
+                <span class="breadcrumb-item active">@Model.productName</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+@if (Model != null)
+{
+    <!-- Shop Detail Start -->
+    <div class="container-fluid pb-5">
+        <div class="row px-xl-5">
+            <div class="col-lg-5 mb-30">
+                <div id="product-carousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner bg-light">
+                        @if (Model != null)
+                        {
+                            var images = Model.img?.Split(';');
+                            if (images != null && images.Length > 0)
+                            {
+                                for (var i = 0; i < images.Length; i++)
+                                {
+                                    var image = images[i]?.Trim();
+                                    if (!string.IsNullOrEmpty(image))
+                                    {
+                                        <div class="carousel-item@(i == 0 ? " active" : "")">
+                                            <img class="w-100 h-100 carousel-image" src="@image" alt="Image">
+                                        </div>
+                                    }
+                                }
+                            }
+                        }
+                    </div>
+                    <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
+                        <i class="fa fa-2x fa-angle-left text-dark"></i>
+                    </a>
+                    <a class="carousel-control-next" href="#product-carousel" data-slide="next">
+                        <i class="fa fa-2x fa-angle-right text-dark"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-7 h-auto mb-30">
+                <div class="h-100 bg-light p-30">
+                    <h3>@Model.productName</h3>
+                    <div class="d-flex mb-3">
+                        @for (int i = 1; i <= @Model.stars; i++)
+                        {
+                            <small class="fa fa-star text-primary mr-1"></small>
+                        }
+                        @for (int i = 1; i <= 5 - @Model.stars; i++)
+                        {
+                            <small class="far fa-star text-primary mr-1"></small>
+                        }
+                        <small>(@Model.vote)</small>
+                    </div>
+                    @{
+                        decimal price = Model.price - (Model.price * Model.sale);
+                        string formattedPrice = price.ToString("N3").Replace(",", ".") + " VND";
+                    }
+                    <h4>@(formattedPrice)</h4>
+                    <h5 class="text-muted ml-2"><del>@(Model.price.ToString("N3").Replace(",", ".") + " VND")</del></h5>
+                    <br />
+                    <div class="mb-3">
+                        @if (Model.type == "Phone")
+                        {
+                            <div><strong>Màn Hình: </strong>@Model.screen</div><br />
+                            <div><strong>Camera: </strong>@Model.Camera</div><br />
+                            <div><strong>RAM: </strong>@Model.RAM</div><br />
+                            <div><strong>Dung lượng: </strong>@Model.Capacity</div><br />
+                        }
+                        @if (Model.type  == "Laptop" || Model.type  == "PC")
+                        {
+                            <div><strong>CPU: </strong>@Model.CPU</div><br />
+                            <div><strong>RAM: </strong>@Model.RAM</div><br />
+                            <div><strong>HardDrive: </strong>@Model.HardDrive</div><br />
+                            <div><strong>Screen: </strong>@Model.screen</div><br />
+                        }
+                        @if (Model.type  == "Tablet")
+                        {
+                            <div><strong>Màn Hình: </strong>@Model.screen</div><br />
+                            <div><strong>Dung lượng: </strong>@Model.Capacity</div><br />
+                            <div><strong>Camera: </strong>@Model.Camera</div><br />
+                            <div><strong>RAM: </strong>@Model.RAM</div><br />
+                        }
+                        @if (Model.type  == "Smartwatch")
+                        {
+                            <div><strong>Screen: </strong>@Model.screen</div><br />
+                            <div><strong>Manufacturer: </strong>@Model.manufacturer</div><br />
+                        }
+
+
+                    </div>
+
+                    <div class="d-flex align-items-center mb-4 pt-2">
+                        <div class="input-group quantity mr-3" style="width: 130px;">
+                            <div class="input-group-btn">
+                                <button class="btn btn-primary btn-minus">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                            <input type="number" class="form-control bg-secondary border-0 text-center dataquantity" value="1">
+                            <div class="input-group-btn">
+                                <button class="btn btn-primary btn-plus">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        @if (Request.IsAuthenticated)
+                        {
+                            <a class="btn btn-primary" href="" onclick="addItemToCart(@Model.Id)">
+                                <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
+                            </a>
+                        }
+                        else
+                        {
+                            <a id="loginLink" class="btn btn-primary" href="@Url.RouteUrl("Login", routeValues: null)">Login to add to cart</a>
+                        }
+
+                    </div>
+                    <div class="d-flex pt-2">
+                        <strong class="text-dark mr-2">Share on:</strong>
+                        <div class="d-inline-flex">
+                            <a class="text-dark px-2" href="">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a class="text-dark px-2" href="">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a class="text-dark px-2" href="">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a class="text-dark px-2" href="">
+                                <i class="fab fa-pinterest"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row px-xl-5">
+            <div class="col">
+                <div class="bg-light p-30">
+                    <div class="nav nav-tabs mb-4">
+                        <a class="nav-item nav-link text-dark active" data-toggle="tab" href="#tab-pane-1">Description</a>
+                        <a class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-2">Information</a>
+                        <a class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-3">Reviews (@Model.vote)</a>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="tab-pane-1">
+                            <h4 class="mb-3">Product Description</h4>
+                            @Html.Raw(@Model.description)
+                        </div>
+                        <div class="tab-pane fade" id="tab-pane-2">
+                            <h4 class="mb-3">Information</h4>
+                            <table id="tableDetail" class="table table-striped">
+                                <tr>
+                                    <td>Name</td>
+                                    <td>@Model.productName</td>
+                                </tr>
+                                <tr>
+                                    <td>Price</td>
+                                    <td>@Model.price</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="tab-pane-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    @Html.Action("showReview", "Detail", new { productId = Model.Id })
+                                </div>
+                                <div class="col-md-6">
+                                    @if (Request.IsAuthenticated)
+                                    {
+                                        @*<a class="btn btn-primary" href="" onclick="addItemToCart(@Model.Id)">
+                                            <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
+                                        </a>*@
+                                        @Html.Action("addReview", "Detail", new { productId = Model.Id })
+                                    }
+                                    else
+                                    {
+                                        <a id="loginLink" class="btn btn-primary" href="@Url.RouteUrl("Login", routeValues: null)">Login to add your review</a>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        function rateProduct(rating) {
+            const ratingInput = $("#Rating");
+            if (ratingInput.val() === "") {
+                ratingInput.val(1); // Nếu giá trị của input là rỗng thì gán giá trị mặc định là 1
+            }
+            ratingInput.val(rating); // Gán giá trị cho input hidden có id="Rating"
+            const stars = $('.text-primary i');
+            stars.each((index, star) => {
+                $(star).toggleClass('fas', index < rating).toggleClass('far', index >= rating);
+            });
+            // Cập nhật lại trạng thái của các ngôi sao
+            stars.each((index, star) => {
+                if (index < rating) {
+                    $(star).addClass('fas').removeClass('far');
+                } else {
+                    $(star).addClass('far').removeClass('fas');
+                }
+            });
+        }
+
+        $('.quantity button').on('click', function () {
+            var button = $(this);
+            var oldValue = button.parent().parent().find('input').val();
+            if (button.hasClass('btn-plus')) {
+                var newVal = parseFloat(oldValue) + 1;
+            } else {
+                if (oldValue > 0) {
+                    var newVal = parseFloat(oldValue) - 1;
+                } else {
+                    newVal = 0;
+                }
+            }
+            button.parent().parent().find('input').val(newVal);
+        });
+
+
+        function addItemToCart(productId) {
+            var userName = '@User.Identity.GetUserName()' // Lấy từ server
+            var quantity = $('.dataquantity').val();
+            $.ajax({
+                url: '/Cart/addCart',
+                type: 'Post',
+                data: {
+                    productID: productId,
+                    userN: userName,
+                    quantity: quantity,
+                },
+                success: function (response) {
+                     var encodedUserName = btoa(userName);
+                    var cartUrl = '@Url.RouteUrl("Cart", new { userName = "__username__" })'.replace('__username__', encodedUserName);
+                    window.location.href = cartUrl; // chuyển hướng đến trang Cart
+                },
+                error: function () {
+                    alert("Errror");
+                }
+            });
+        }
+        $(document).ready(function () {
+            var table = document.getElementById("tableDetail");
+            if("@Model.manufacturer" != "")
+                table.insertRow(-1).innerHTML = `<td>Manufacturer</td>"
+                                            <td> @Model.manufacturer</td> `;
+            if("@Model.screen" != "")
+                table.insertRow(-1).innerHTML = `<td>Screen</td>
+                                            <td> @Model.screen</td> `;
+            if("@Model.CPU" != "")
+                table.insertRow(-1).innerHTML = `<td>CPU</td>
+                                            <td> @Model.CPU</td> `;
+            if("@Model.HardDrive" != "")
+                table.insertRow(-1).innerHTML = `<td>HardDrive</td>
+                                            <td> @Model.HardDrive</td> `;
+            if("@Model.Camera" != "")
+                table.insertRow(-1).innerHTML = `<td>Camera</td>
+                                            <td> @Model.Camera</td> `;
+            if("@Model.Capacity" != "")
+                table.insertRow(-1).innerHTML = `<td>Capacity</td>
+                                            <td> @Model.Capacity</td> `;
+        });
+        $('#ActionLinkShop').addClass('active');
+
+
+
+
+    </script>
+}
+
+

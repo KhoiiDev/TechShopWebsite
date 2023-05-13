@@ -1,0 +1,238 @@
+﻿@model PagedList.IPagedList<TechShopWebsite.Models.EF.Product>
+@using Microsoft.AspNet.Identity
+@using PagedList.Mvc;
+@using PagedList;
+
+@{
+    ViewBag.Title = "Category Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="@Url.RouteUrl("Home")">Home</a>
+                <a class="breadcrumb-item text-dark" href="@Url.RouteUrl("Category")">Shop</a>
+                <span class="breadcrumb-item active">Shop List</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Shop Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <!-- Shop Sidebar Start -->
+        <div class="col-lg-3 col-md-4">
+            <!-- Price Start -->
+            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by price</span></h5>
+            <div class="bg-light p-4 mb-30">
+                <a class="nav-item nav-link badge-light" href="@Url.RouteUrl("CategoryType", new { @type = "phone", @page = 1  })">Điện Thoại</a>
+                <a class="nav-item nav-link badge-light" href="@Url.RouteUrl("CategoryType", new { @type = "laptop", @page = 1  })">Lap top</a>
+                <a class="nav-item nav-link badge-light" href="@Url.RouteUrl("CategoryType", new { @type = "tablet", @page = 1  })">Máy tính bảng</a>
+                <a class="nav-item nav-link badge-light" href="@Url.RouteUrl("CategoryType", new { @type = "smartwatch", @page = 1  })">Smartwatch</a>
+            </div>
+
+            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by price</span></h5>
+            <div class="bg-light p-4 mb-30">
+                <form>
+                    <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
+                        <input type="radio" class="custom-control-input" id="price-1" name="filter-price" value="5000000">
+                        <label class="custom-control-label" for="price-1">0 - 5.000.000</label>
+                    </div>
+                    <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
+                        <input type="radio" class="custom-control-input" id="price-2" name="filter-price" value="10000000">
+                        <label class="custom-control-label" for="price-2">5.000.000 - 10.000.000</label>
+
+                    </div>
+                    <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
+                        <input type="radio" class="custom-control-input" id="price-3" name="filter-price" value="15000000">
+                        <label class="custom-control-label" for="price-3">10.000.000 - 15.000.000</label>
+
+                    </div>
+                    <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
+                        <input type="radio" class="custom-control-input" id="price-4" name="filter-price" value="20000000">
+                        <label class="custom-control-label" for="price-4">15.000.000 - 20.000.000</label>
+
+                    </div>
+                    <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
+                        <input type="radio" class="custom-control-input" id="price-5" name="filter-price" value="25000000">
+                        <label class="custom-control-label" for="price-5">20.000.000 - 25.000.000</label>
+                    </div>
+                    <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
+                        <input type="radio" class="custom-control-input" checked id="price-all" name="filter-price" value="all">
+                        <label class="custom-control-label" for="price-all">All Price</label>
+                    </div>
+                </form>
+            </div>
+            <!-- Price End -->
+        </div>
+        <!-- Shop Sidebar End -->
+        <!-- Shop Product Start -->
+        <div class="col-lg-9 col-md-8">
+            <div class="row pb-3">
+                <div class="col-12 pb-1">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <div>
+
+                        </div>
+                        <div class="ml-2">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Sorting</button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="#">Latest</a>
+                                    <a class="dropdown-item" href="#">Popularity</a>
+                                    <a class="dropdown-item" href="#">Best Rating</a>
+                                </div>
+                            </div>
+                            @*<div class="btn-group ml-2">
+                                    <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Showing</button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="#">10</a>
+                                        <a class="dropdown-item" href="#">20</a>
+                                        <a class="dropdown-item" href="#">30</a>
+                                    </div>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <div class="col-lg-4 col-md-6 col-sm-6 pb-1 filter-product" id="filter-product-@item.meta">
+                            <div class="product-item bg-light mb-4">
+                                <div class="product-img position-relative overflow-hidden" style="height: 250px;">
+                                    <img class="img-fluid w-100" src="@item.img.Split(';')[0]">
+                                    <div class="product-action">
+                                        @if (Request.IsAuthenticated)
+                                        {
+                                            <a class="btn btn-outline-dark btn-square" href="" onclick="addItemToCart(@item.Id)"><i class="fa fa-shopping-cart"></i></a>
+                                        }
+                                        <a class="btn btn-outline-dark btn-square" href="@Url.RouteUrl("DetailProduct", new { @meta = item.meta })"><i class="fa fa-search"></i></a>
+
+                                    </div>
+                                </div>
+                                <div class="text-center py-4">
+                                    <a class="h6 text-decoration-none text-truncate" href="#">@item.productName</a>
+                                    <div class="d-flex align-items-center justify-content-center mt-2">
+
+                                        @{
+                                            decimal price = item.price - (item.price * item.sale);
+                                            string formattedPrice = price.ToString("N3").Replace(",", ".") + " VND";
+                                        }
+                                        <h5 id="price-product">@(formattedPrice)</h5>
+                                        <h6 class="text-muted ml-2"><del>@(item.price.ToString("N3").Replace(",", ".") + " VND")</del></h6>
+
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-center mb-1">
+                                        @for (int i = 1; i <= item.stars; i++)
+                                        {
+                                            <small class="fa fa-star text-primary mr-1"></small>
+                                        }
+                                        @for (int i = 1; i <= 5 - item.stars; i++)
+                                        {
+                                            <small class="far fa-star text-primary mr-1"></small>
+                                        }
+                                        <small>(@item.vote)</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                <nav>
+                    @*<ul class="pagination justify-content-center">
+                            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>*@
+                    @{
+                        // Lấy giá trị cần thiết từ Model
+                        int currentPage = Model.PageNumber;
+                        int totalPages = Model.PageCount;
+                    }
+
+                    <ul class="pagination justify-content-center">
+                        @if (currentPage > 1)
+                        {
+                            <li class="page-item"><a class="page-link" href="@Url.RouteUrl("Category", new { page = currentPage - 1 })">Previous</a></li>
+                        }
+                        @for (int i = 1; i <= totalPages; i++)
+                        {
+                            <li class="page-item @(i == currentPage ? "active" : "")"><a class="page-link" href="@Url.RouteUrl("Category", new { page = i })">@i</a></li>
+                        }
+                        @if (currentPage < totalPages)
+                        {
+                            <li class="page-item"><a class="page-link" href="@Url.RouteUrl("Category", new { page = currentPage + 1 })">Next</a></li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Shop Product End -->
+</div>
+<!-- Shop End -->
+@section scripts{
+    <script>
+        $('#ActionLinkShop').addClass('active');
+
+        function addItemToCart(productId) {
+            var userName = '@User.Identity.GetUserName()' // Lấy từ server
+            $.ajax({
+                url: '/Cart/addCart',
+                type: 'Post',
+                data: {
+                    productID: productId,
+                    userN: userName,
+                    quantity: 1,
+                },
+                success: function (response) {
+                    var cartUrl = '@Url.RouteUrl("Cart")';
+                    window.location.href = cartUrl; // chuyển hướng đến trang Cart
+                },
+                error: function () {
+                    alert("Error");
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            // Tạo mảng chứa toàn bộ id của các thẻ có class là filter-product
+            var filterProductIds = [];
+            $('.filter-product').each(function () {
+                filterProductIds.push($(this).attr('id'));
+            });
+
+
+
+            // Lắng nghe sự kiện click trên các radio button
+            $('input[name="filter-price"]').click(function () {
+                // Lấy giá trị của radio button được chọn
+                if ($(this).val() != 'all') {
+                    var selectedPriceRange = parseFloat($(this).val());
+                    // Lọc danh sách sản phẩm phù hợp với giá trị được chọn
+                    for (var i = 0; i < filterProductIds.length; i++) {
+                        var productId = filterProductIds[i];
+                        var discountPrice = parseFloat($('#' + productId).find('h5').text().replace('.', '').replace(' VND', '')) * 1000;
+
+                        //alert(discountPrice + "--" + selectedPriceRange);
+                        if (discountPrice <= selectedPriceRange && discountPrice >= selectedPriceRange - 5000000) {
+                            $('#' + productId).show();
+                        } else {
+                            $('#' + productId).hide();
+                        }
+                    }
+                } else {
+                    $(".filter-product").show();
+                }
+            });
+        });
+    </script>
+}
+

@@ -1,0 +1,21 @@
+﻿@model IEnumerable<TechShopWebsite.Models.EF.Reviews>
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <div class="media mb-4">
+            <div class="media-body">
+                <h6>@item.Reviewer<small> - <i> @item.datebegin.ToString("dd-MM-yyyy")</i></small></h6>
+                @for (int i = 1; i <= item.Rating; i++)
+                {
+                    <small class="fa fa-star text-primary mr-1"></small>
+                }
+                @for (int i = 1; i <= 5 - item.Rating; i++)
+                {
+                    <small class="far fa-star text-primary mr-1"></small>
+                }
+                <p>@item.ReviewContent</p>
+            </div>
+        </div>
+    }
+}

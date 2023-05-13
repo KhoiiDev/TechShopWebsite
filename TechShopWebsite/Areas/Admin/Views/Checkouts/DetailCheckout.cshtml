@@ -1,0 +1,85 @@
+﻿@model TechShopWebsite.Models.EF.Checkout
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="d-flex justify-content-center">
+    <a href="@Url.RouteUrl("AdminCheckouts")" class="btn btn-success"> <i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
+    <h3>Chi tiết đơn hàng</h3>
+
+    <div class="d-flex flex-column-reverse">
+        <div class="p-2">
+            <h4> <b>Ngày lập:</b>  <span>@Model.datebegin</span> </h4>
+        </div>
+        <div class="p-2">
+            <h4> <b>Người Mua: </b>  <span>@Model.username</span></h4>
+        </div>
+        <div class="p-2">
+            <h4> <b>Địa chỉ: </b><span>@Model.Address</span></h4>
+        </div>
+        <div class="p-2">
+            <h4> <b>Số điện thoại: </b>  <span>@Model.phone</span></h4>
+        </div>
+        <div class="p-2">
+            <h4> <b>Mã giảm giá: </b>   <span>@Model.ZipCode</span></h4>
+        </div>
+        <div class="p-2">
+            <h4>
+                <b>Tình trạng thanh toán:</b>
+                @if (Model.isPay)
+                {
+                    <span>Đã Thanh toán</span>
+                }
+                else
+                {
+                    <span>Chưa Thanh toán</span>
+                }
+
+
+            </h4>
+        </div>
+        <div class="p-2">
+            <h4><b>Sản Phẩm:</b></h4>
+            @{
+                decimal total = 0;
+            }
+            <table class="table table-striped table-bordered table-hover dataTable no-footer">
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                </tr>
+                @foreach (var cart in Model.carts)
+                {
+                    var sum = cart.cost * cart.quantity;
+                    total += sum;
+                    <tr>
+                        <td>
+                            <img class="img-fluid" src="@cart.product.img.Split(';')[0]" width="80">
+                            @cart.product.productName
+
+                        </td>
+                        
+                        <td>@cart.quantity</td>
+                        <td>@((cart.cost * cart.quantity).ToString("N3").Replace(",", ".") + " VND")</td>
+                    </tr>
+                }
+            </table>
+
+        </div>
+        <div class="p-2">
+            <h4><b>Tổng tiền: </b><span>@total.ToString("N3").Replace(",", ".") VND</span></h4>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+    <script>
+        $('#checkouts').addClass('active-menu');
+    </script>
+}
+
